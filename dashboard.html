@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Track Hood | Client Dashboard</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="assets/images/favicon.png" type="image/png">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="assets/css/fontawesome.css">
+    
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="assets/css/templatemo-lugx-gaming.css">
+    
+    <!-- Dashboard CSS -->
+    <style>
+        :root {
+            --primary-color: #2a5298;
+            --secondary-color: #4fc1e9;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f7fa;
+            padding-top: 70px; /* Added for fixed header */
+        }
+        
+        /* Improved Mobile Header */
+        .professional-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1e3c72 100%);
+            padding: 12px 0;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .professional-header .logo img {
+            height: 36px;
+            width: auto;
+        }
+        
+        /* Improved Mobile Navigation */
+        .main-nav {
+            position: relative;
+        }
+        
+        .main-nav ul.nav {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 15px;
+            background: white;
+            width: 200px;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            padding: 10px 0;
+            z-index: 1001;
+        }
+        
+        .main-nav ul.nav.show {
+            display: block;
+        }
+        
+        .main-nav .nav-link {
+            color: var(--dark-color) !important;
+            padding: 10px 20px !important;
+            display: block;
+            font-weight: 500;
+        }
+        
+        .main-nav .nav-link:hover {
+            background: #f8f9fa;
+        }
+        
+        .menu-trigger {
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        /* Improved Client Menu for Mobile */
+        .client-menu {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 15px 0;
+            position: sticky;
+            top: 70px;
+            z-index: 999;
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .client-menu::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .client-menu .nav {
+            display: inline-flex;
+            flex-wrap: nowrap;
+            padding-bottom: 5px;
+        }
+        
+        .client-menu .nav-item {
+            margin-right: 5px;
+            display: inline-block;
+            float: none;
+        }
+        
+        .client-menu .nav-link {
+            color: var(--dark-color);
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .client-menu .nav-link.active {
+            background-color: var(--primary-color);
+            color: white !important;
+        }
+        
+        /* Dashboard Content */
+        .dashboard-container {
+            padding: 30px 0;
+        }
+        
+        .dashboard-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            padding: 20px;
+            margin-bottom: 25px;
+            height: 100%;
+            border-left: 4px solid var(--secondary-color);
+        }
+        
+        .dashboard-card h5 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 20px 10px;
+        }
+        
+        .stat-card .value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 10px 0;
+        }
+        
+        .stat-card .label {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        .stat-card .icon {
+            font-size: 24px;
+            color: var(--secondary-color);
+        }
+        
+        /* Live Map */
+        .map-container {
+            height: 400px;
+            background: #e5e9f2;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .map-placeholder {
+            background: url('assets/images/map-bg.jpeg') center/cover;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .vehicle-marker {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background-color: var(--secondary-color);
+            border: 2px solid white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        /* Vehicle List */
+        .vehicle-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .vehicle-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            transition: all 0.3s;
+        }
+        
+        .vehicle-item:hover {
+            background-color: #f8f9fa;
+            cursor: pointer;
+        }
+        
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+        
+        .status-active {
+            background-color: #2ecc71;
+        }
+        
+        .status-idle {
+            background-color: #f39c12;
+        }
+        
+        .status-inactive {
+            background-color: #e74c3c;
+        }
+        
+        .vehicle-info {
+            flex: 1;
+        }
+        
+        .vehicle-number {
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .vehicle-status {
+            font-size: 13px;
+            color: #7f8c8d;
+        }
+        
+        /* Alerts Table */
+        .alert-table {
+            width: 100%;
+        }
+        
+        .alert-table th {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 15px;
+            font-weight: 500;
+        }
+        
+        .alert-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .alert-critical {
+            color: #e74c3c;
+            font-weight: 500;
+        }
+        
+        .alert-warning {
+            color: #f39c12;
+            font-weight: 500;
+        }
+        
+        .alert-info {
+            color: #3498db;
+            font-weight: 500;
+        }
+        
+        /* Footer */
+        .professional-footer {
+            background: var(--dark-color);
+            color: var(--light-color);
+            padding: 30px 0 15px;
+            margin-top: 40px;
+        }
+        
+        .copyright {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 20px;
+            margin-top: 20px;
+            color: #bdc3c7;
+            font-size: 13px;
+        }
+
+        /* Mobile-specific adjustments */
+        @media (max-width: 768px) {
+            .dashboard-card {
+                padding: 15px;
+            }
+            
+            .map-container {
+                height: 300px;
+            }
+            
+            .vehicle-list {
+                max-height: 250px;
+            }
+            
+            .alert-table th, 
+            .alert-table td {
+                padding: 8px 10px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+  <!-- Preloader -->
+  <div id="js-preloader" class="js-preloader">
+    <div class="preloader-inner">
+      <span class="dot"></span>
+      <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Improved Mobile Header -->
+  <header class="header-area professional-header">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-6">
+                <a href="index.html" class="logo">
+                    <img src="assets/images/thlogo-white.jpg" alt="Track Hood">
+                </a>
+            </div>
+            <div class="col-6 text-right">
+                <nav class="main-nav">
+                    <a class='menu-trigger'>
+                        <span><i class="fas fa-bars"></i></span>
+                    </a>
+                    <ul class="nav">
+                        <li><a href="#" class="nav-link">Support</a></li>
+                        <li><a href="#" class="nav-link">Documentation</a></li>
+                        <li><a href="#" class="nav-link">Account</a></li>
+                        <li><a href="#" class="nav-link"><i class="fas fa-bell"></i> Alerts</a></li>
+                        <li><a href="#" class="nav-link"><i class="fas fa-user-circle"></i> Profile</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+  </header>
+
+  <!-- Improved Client Menu - Now Scrollable -->
+  <div class="client-menu">
+    <div class="container">
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link active" href="#"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="fas fa-map-marked-alt"></i> Live Map</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="fas fa-car"></i> Vehicles</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="fas fa-bell"></i> Alerts</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="fas fa-chart-line"></i> Reports</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="fas fa-cog"></i> Settings</a>
+            </li>
+        </ul>
+    </div>
+  </div>
+
+  <!-- Dashboard Content (same as before) -->
+  <div class="dashboard-container">
+    <div class="container">
+        <!-- Stats Row -->
+        <div class="row">
+            <div class="col-md-3">
+                <div class="dashboard-card stat-card">
+                    <div class="icon"><i class="fas fa-car"></i></div>
+                    <div class="value">14</div>
+                    <div class="label">Total Vehicles</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="dashboard-card stat-card">
+                    <div class="icon"><i class="fas fa-road"></i></div>
+                    <div class="value">9</div>
+                    <div class="label">Active Now</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="dashboard-card stat-card">
+                    <div class="icon"><i class="fas fa-exclamation-triangle"></i></div>
+                    <div class="value">3</div>
+                    <div class="label">Today's Alerts</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="dashboard-card stat-card">
+                    <div class="icon"><i class="fas fa-gas-pump"></i></div>
+                    <div class="value">247L</div>
+                    <div class="label">Fuel Used</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Map and Vehicles Row -->
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="dashboard-card">
+                    <h5><i class="fas fa-map-marked-alt"></i> Live Fleet View</h5>
+                    <div class="map-container">
+                        <div class="map-placeholder"></div>
+                        <!-- Vehicle markers would be positioned here -->
+                        <div class="vehicle-marker" style="top: 30%; left: 40%;"></div>
+                        <div class="vehicle-marker" style="top: 45%; left: 55%;"></div>
+                        <div class="vehicle-marker" style="top: 60%; left: 35%;"></div>
+                    </div>
+                    <div class="mt-3">
+                        <button class="btn btn-sm btn-outline-primary mr-2"><i class="fas fa-search"></i> Zoom In</button>
+                        <button class="btn btn-sm btn-outline-primary mr-2"><i class="fas fa-search-minus"></i> Zoom Out</button>
+                        <button class="btn btn-sm btn-outline-primary"><i class="fas fa-clock"></i> History</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="dashboard-card">
+                    <h5><i class="fas fa-car-side"></i> Vehicle Status</h5>
+                    <div class="vehicle-list">
+                        <div class="vehicle-item">
+                            <div class="status-indicator status-active"></div>
+                            <div class="vehicle-info">
+                                <div class="vehicle-number">KA 1234A</div>
+                                <div class="vehicle-status">En route to Kampala • 62 km/h</div>
+                            </div>
+                            <i class="fas fa-chevron-right text-muted"></i>
+                        </div>
+                        <div class="vehicle-item">
+                            <div class="status-indicator status-active"></div>
+                            <div class="vehicle-info">
+                                <div class="vehicle-number">UA 5678B</div>
+                                <div class="vehicle-status">At client location • 0 km/h</div>
+                            </div>
+                            <i class="fas fa-chevron-right text-muted"></i>
+                        </div>
+                        <div class="vehicle-item">
+                            <div class="status-indicator status-idle"></div>
+                            <div class="vehicle-info">
+                                <div class="vehicle-number">UB 9012C</div>
+                                <div class="vehicle-status">Idle at depot • Engine on</div>
+                            </div>
+                            <i class="fas fa-chevron-right text-muted"></i>
+                        </div>
+                        <div class="vehicle-item">
+                            <div class="status-indicator status-inactive"></div>
+                            <div class="vehicle-info">
+                                <div class="vehicle-number">KF 3456D</div>
+                                <div class="vehicle-status">Maintenance • Offline</div>
+                            </div>
+                            <i class="fas fa-chevron-right text-muted"></i>
+                        </div>
+                        <div class="vehicle-item">
+                            <div class="status-indicator status-active"></div>
+                            <div class="vehicle-info">
+                                <div class="vehicle-number">KA 7890E</div>
+                                <div class="vehicle-status">On Entebbe Road • 78 km/h</div>
+                            </div>
+                            <i class="fas fa-chevron-right text-muted"></i>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-block mt-3">View All Vehicles</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Alerts Row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="dashboard-card">
+                    <h5><i class="fas fa-exclamation-triangle"></i> Recent Alerts</h5>
+                    <div class="table-responsive">
+                        <table class="alert-table">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Vehicle</th>
+                                    <th>Alert Type</th>
+                                    <th>Location</th>
+                                    <th>Details</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Today, 10:23 AM</td>
+                                    <td>KA 1234A</td>
+                                    <td class="alert-warning">Geo-fence Exit</td>
+                                    <td>Nakawa Division</td>
+                                    <td>Left authorized zone</td>
+                                    <td><a href="#" class="btn btn-sm btn-outline-primary">View</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Today, 09:45 AM</td>
+                                    <td>UA 5678B</td>
+                                    <td class="alert-warning">Speeding</td>
+                                    <td>Entebbe Road</td>
+                                    <td>Exceeded 80 km/h limit</td>
+                                    <td><a href="#" class="btn btn-sm btn-outline-primary">View</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Yesterday, 3:15 PM</td>
+                                    <td>UB 9012C</td>
+                                    <td class="alert-info">Ignition On</td>
+                                    <td>Depot Yard</td>
+                                    <td>After hours activation</td>
+                                    <td><a href="#" class="btn btn-sm btn-outline-primary">View</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Yesterday, 11:20 AM</td>
+                                    <td>KF 3456D</td>
+                                    <td class="alert-critical">Maintenance Required</td>
+                                    <td>Kampala</td>
+                                    <td>Engine fault detected</td>
+                                    <td><a href="#" class="btn btn-sm btn-outline-primary">View</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-right mt-3">
+                        <a href="#" class="btn btn-primary">View All Alerts</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <!-- Professional Footer -->
+  <footer class="professional-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <p>© 2023 Track Hood UG LTD. All rights reserved.</p>
+            </div>
+            <div class="col-md-6 text-md-right">
+                <p>Client Support: <strong>+256 700 123 456</strong> | <a href="#" style="color: #bdc3c7;">help@trackhood.ug</a></p>
+            </div>
+        </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+  <script src="assets/js/custom.js"></script>
+  
+  <!-- Improved Mobile Navigation Script -->
+  <script>
+    $(document).ready(function() {
+        // Toggle mobile menu
+        $('.menu-trigger').click(function(e) {
+            e.stopPropagation();
+            $('.main-nav ul.nav').toggleClass('show');
+        });
+        
+        // Close menu when clicking elsewhere
+        $(document).click(function() {
+            $('.main-nav ul.nav').removeClass('show');
+        });
+        
+        // Prevent menu from closing when clicking inside it
+        $('.main-nav ul.nav').click(function(e) {
+            e.stopPropagation();
+        });
+        
+        // Simulate live vehicle movement
+        function moveVehicles() {
+            $('.vehicle-marker').each(function() {
+                const currentTop = parseInt($(this).css('top'));
+                const currentLeft = parseInt($(this).css('left'));
+                
+                // Random slight movement
+                const newTop = currentTop + (Math.random() * 2 - 1);
+                const newLeft = currentLeft + (Math.random() * 2 - 1);
+                
+                $(this).css({
+                    'top': newTop + '%',
+                    'left': newLeft + '%'
+                });
+            });
+            
+            // Update vehicle speeds randomly
+            $('.vehicle-status').each(function() {
+                if ($(this).text().includes('km/h')) {
+                    const currentSpeed = parseInt($(this).text().match(/\d+/)[0]);
+                    const newSpeed = Math.max(0, currentSpeed + Math.floor(Math.random() * 6 - 3));
+                    $(this).text($(this).text().replace(/\d+ km\/h/, newSpeed + ' km/h'));
+                }
+            });
+        }
+        
+        // Update every 3 seconds
+        setInterval(moveVehicles, 3000);
+        
+        // Vehicle item click handler
+        $('.vehicle-item').click(function() {
+            const vehicleNum = $(this).find('.vehicle-number').text();
+            alert('Showing details for ' + vehicleNum + '\n\nIn a real implementation, this would open a detailed view with:\n- Current location\n- Route history\n- Driver info\n- Vehicle metrics');
+        });
+    });
+  </script>
+</body>
+</html>
